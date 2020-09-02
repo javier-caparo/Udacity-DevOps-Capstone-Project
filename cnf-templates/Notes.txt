@@ -41,3 +41,20 @@ stage('Linting') {
 
 to delete cluster
 ++++++++++
+delete the deployment & service
+
+delet the cluster
+eksctl delete cluster --name Capstone-cluster
+
+- on cloudformation
+delte the ubuntu stack
+
+sonarqube
+++++++++++++++++++
+sudo mysql_secure_installation
+  ansyer Y
+   then 1
+     then all 'Y"
+
+     sudo mysql
+
