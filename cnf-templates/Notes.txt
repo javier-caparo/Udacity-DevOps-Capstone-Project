@@ -38,3 +38,6 @@ stage('Linting') {
     steps {
     }
 }
+
+to delete cluster
+++++++++++

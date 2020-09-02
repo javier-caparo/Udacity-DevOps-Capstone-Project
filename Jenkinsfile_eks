@@ -35,7 +35,7 @@ pipeline {
 			steps {
 				withAWS(credentials: 'aws-credentials', region: 'us-west-2') {
 					sh '''
-						aws eks --region $REGION update-kubeconfig --name $CLUSTER_NAME
+						aws eks --region $region update-kubeconfig --name $cluster_name
 					'''
 				}
 			}
