@@ -1,0 +1,40 @@
+ - got this Error in docker
+
+ubuntu@ip-172-31-56-27:~$ docker info
+Client:
+ Debug Mode: false
+
+Server:
+ERROR: Got permission denied while trying to connect to the Docker daemon socket at unix:///var/run/docker.sock: Get http://%2Fvar%2Frun%2Fdocker.sock/v1.40/info: dial unix /var/run/docker.sock: connect: permission denied
+
+- Fix:
+newgrp docker
+sudo usermod -aG docker ubuntu
+sudo usermod -aG docker jenkins
+
+- test again
+$ docker info
+$docker run hello-world
+
+=========
+Jenkins Plugins
+==========
+Ocean Blue
+NodeJS   ( later in global tool configuration : add a Nodejs with name "nodejs" , vresion 14.8.0)
+Pipeline AWS Steps
+GitParameter
+==========
+
+Jenkins Credentials
+===========
+github (as secret key  , id=empty , description :github)
+dockerhub ( username password  , use id: dockerhub)
+AWS credentials ( AWS credentials , id:aws-credentials, description: aws-credentials access key id, secrect access)
+
+
+Things to re testa nd check
+=========
+stage('Linting') {
+    steps {
+    }
+}

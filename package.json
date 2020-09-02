@@ -1,0 +1,27 @@
+{
+  "name": "nodejs-image-demo",
+  "version": "1.0.0",
+  "description": "nodejs image demo webapp",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "eslint": "eslint \"./**/*.js\" --quiet",
+    "eslintFull": "eslint \"./**/*.js\"",
+    "eslintFix": "eslint --fix './**/*.js'",
+    "prettify": "prettier src/*.js --write"
+  },
+  "keywords": [
+    "nodejs",
+    "bootstrap",
+    "express"
+  ],
+  "author": "Javier Caparo",
+  "license": "MIT",
+  "dependencies": {
+    "express": "^4.17.1"
+  },
+  "devDependencies": {
+    "eslint": "^7.8.1",
+    "prettier": "^2.1.1"
+  }
+}

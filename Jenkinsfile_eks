@@ -1,0 +1,50 @@
+pipeline {
+	options { timestamps() }
+    
+	environment {
+		region = 'us-west-2'
+		cluster_name = 'Capstone-cluster'
+	}
+
+    agent any
+
+	stages {
+
+		stage('Getting the cluster config files') {
+			steps {
+				withAWS(credentials: 'aws-credentials', region: 'us-west-2') {
+					sh '''
+						aws s3 cp s3://jc-eks-cloudformation/cluster.yaml cluster.yaml
+						ls
+					'''
+				}	
+			}
+		}
+		
+		stage('Create k8s cluster') {
+			steps {
+				withAWS(credentials: 'aws-credentials', region: 'us-west-2') {
+					sh '''
+						eksctl create cluster --config-file cluster.yaml
+					'''
+				}
+			}
+		}
+
+		stage('Create conf file cluster') {
+			steps {
+				withAWS(credentials: 'aws-credentials', region: 'us-west-2') {
+					sh '''
+						aws eks --region $REGION update-kubeconfig --name $CLUSTER_NAME
+					'''
+				}
+			}
+		}
+	}
+	
+	post {
+        always {
+            echo 'Pipeline finished'
+        }
+    }
+}
