@@ -5,9 +5,9 @@
   "main": "app.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "eslint": "eslint \"./**/*.js\" --quiet",
-    "eslintFull": "eslint \"./**/*.js\"",
-    "eslintFix": "eslint --fix './**/*.js'",
+    "lint": "eslint \"./**/*.js\" --quiet",
+    "lintFull": "eslint \"./**/*.js\"",
+    "lintFix": "eslint --fix './**/*.js'",
     "prettify": "prettier src/*.js --write"
   },
   "keywords": [

@@ -28,13 +28,32 @@ pipeline {
         
         stage('Cloning Git') {
             steps {
-                git 'https://github.com/jfcb853/nodejs-image-demo.git'
+                git 'https://github.com/jfcb853/Udacity-DevOps-Capstone-Project'
             }
         }
         stage('Build Dependencies') {
             steps {
                 sh 'npm install'
             }
+        }
+
+        stage('Dev tests') {
+            when {
+                not { branch 'master' }
+            }
+            parallel {
+                stage('Eslint Test') {
+                    steps {
+                        sh 'npm run lint'
+                    }
+                }
+                stage('Prettier Test') {
+                    steps {
+                        sh 'npm run prettify'
+                    }
+                }
+            }
+            
         }
 
         stage('Lint') {
