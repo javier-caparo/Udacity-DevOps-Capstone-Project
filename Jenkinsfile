@@ -188,12 +188,21 @@ pipeline {
             }
         }
 
-		stage('Removing image locally') {
+		stage('Remove Image locally') {
 			when {
                 branch 'master'
             }
             steps{
                 sh "docker rmi $registry:$BUILD_NUMBER"
+            }
+		}
+
+        stage('Remove Image from Devs') {
+			when {
+                not { branch 'master' }
+            }
+            steps{
+                sh "docker rmi eks-webapp:$BRANCH_NAME.$BUILD_NUMBER"
             }
 		}
     }
