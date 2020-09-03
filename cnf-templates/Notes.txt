@@ -32,12 +32,14 @@ dockerhub ( username password  , use id: dockerhub)
 AWS credentials ( AWS credentials , id:aws-credentials, description: aws-credentials access key id, secrect access)
 
 
-Things to re testa nd check
-=========
-stage('Linting') {
-    steps {
-    }
-}
+To check cluster
+===========
+aws eks --region us-west-2 update-kubeconfig --name Capstone-cluster
+kubectl get svc
+kubectl get deployments
+kubectl get nodes -o wide |  awk {'print $1" " $2 " " $7'} | column -t
+
+
 
 to delete cluster
 ++++++++++
