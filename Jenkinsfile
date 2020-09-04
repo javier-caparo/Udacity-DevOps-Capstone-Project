@@ -57,6 +57,9 @@ pipeline {
         }
 
         stage('Code Quality Check via SonarQube') {
+            when {
+                branch 'master'
+            }
             steps {
                 script {
                     def scannerHome = tool 'sonarqube-scanner';
