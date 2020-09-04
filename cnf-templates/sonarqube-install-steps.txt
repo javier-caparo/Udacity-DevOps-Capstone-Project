@@ -1,4 +1,5 @@
-Follow this tutorial:
+Follow this tutorial: 
+
 https://techexpert.tips/sonarqube/sonarqube-installation-on-the-cloud-aws-ec2/
   # go directly to part: Tutorial - Sonarqube Installation on Ubuntu Linux
 
