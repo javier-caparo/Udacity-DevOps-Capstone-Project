@@ -1,0 +1,44 @@
+pipeline {
+	options { timestamps() }
+    
+	environment {
+		region = 'us-west-2'
+		cluster_name = 'Capstone-cluster'
+	}
+
+    agent any
+
+	stages {
+
+		stage('Create conf file cluster') {
+			steps {
+				withAWS(credentials: 'aws-credentials', region: 'us-west-2') {
+					sh '''
+						aws eks --region $region update-kubeconfig --name $cluster_name
+					'''
+				}
+			}
+		}
+		
+		stage('Delete k8s cluster') {
+			steps {
+				withAWS(credentials: 'aws-credentials', region: 'us-west-2') {
+					sh '''
+					    kubectl delete service my-app
+					    sleep 15
+					    kubectl delete deployment my-app
+					    sleep 15
+						eksctl delete cluster --name $cluster_name
+
+					'''
+				}
+			}
+		}
+	}
+	
+	post {
+        always {
+            echo 'Pipeline finished'
+        }
+    }
+}
