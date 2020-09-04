@@ -1,0 +1,145 @@
+Follow this tutorial:
+https://techexpert.tips/sonarqube/sonarqube-installation-on-the-cloud-aws-ec2/
+  # go directly to part: Tutorial - Sonarqube Installation on Ubuntu Linux
+
+Basically:
+apt-get update
+apt-get install -y software-properties-common 
+apt-get install postgresql postgresql-contrib
+sudo passwd postgres       # change the password to postgress ( example:Hypersonic#20)
+su - postgres
+psql
+# here you are in postgres db
+CREATE USER sonarqube WITH PASSWORD 'kamisama123';
+CREATE DATABASE sonarqube OWNER sonarqube;
+GRANT ALL PRIVILEGES ON DATABASE sonarqube TO sonarqube;
+\q
+# here you retrun to postgres user
+$ exit
+# here you're ubuntu user again
+
+# check the last distribution and donwload it  from here https://binaries.sonarsource.com/Distribution/sonarqube/. Exmaple;
+
+mkdir /downloads/sonarqube -p
+cd /downloads/sonarqube
+wget https://binaries.sonarsource.com/Distribution/sonarqube/sonarqube-7.9.1.zip
+unzip sonarqube-7.9.1.zip
+sudo mv sonarqube-7.9.1 /opt/sonarqube
+
+sudo adduser --system --no-create-home --group --disabled-login sonarqube
+sudo chown -R sonarqube:sonarqube /opt/sonarqube
+
+- Edit the sonar.sh configuration file.
+
+sudo nano  /opt/sonarqube/bin/linux-x86-64/sonar.sh
+
+- Configure the following options:
+RUN_AS_USER=sonarqube
+
+- Edit the sonar.properties configuration file.
+
+sudo nano /opt/sonarqube/conf/sonar.properties
+
+- Configure the following options:
+
+sonar.jdbc.username=sonarqube
+sonar.jdbc.password=kamisama123
+sonar.jdbc.url=jdbc:postgresql://localhost/sonarqube
+sonar.web.javaAdditionalOpts=-server
+sonar.web.host=0.0.0.0
+
+- Create a Linux configuration file named 99-sonarqube.conf.
+sudo nano /etc/security/limits.d/99-sonarqube.conf
+
+Here  is the content of the 99-sonarqube.conf file.
+sonarqube   -   nofile   65536
+sonarqube   -   nproc    4096
+
+- Edit the sysctl.conf configuration file.
+sudo nano /etc/sysctl.conf
+vm.max_map_count=262144
+fs.file-max=65536
+
+-Reboot your computer to enable the new configuration
+reboot
+
+-Start the Sonarqube service.
+
+/opt/sonarqube/bin/linux-x86-64/sonar.sh start
+
+-Use the following command to monitor the SonarQube log.
+ tail -f /opt/sonarqube/logs/sonar.log
+
+-The Sonarqube log should show the following information:
+
+--> Wrapper Started as Daemon
+Launching a JVM...
+Wrapper (Version 3.2.3) http://wrapper.tanukisoftware.org
+  Copyright 1999-2006 Tanuki Software, Inc.  All Rights Reserved.
+2019.10.07 17:18:44 INFO  app[][o.s.a.AppFileSystem] Cleaning or creating temp directory /opt/sonarqube/temp
+2019.10.07 17:18:44 INFO  app[][o.s.a.es.EsSettings] Elasticsearch listening on /127.0.0.1:9001
+2019.10.07 17:18:44 INFO  app[][o.s.a.ProcessLauncherImpl] Launch process[[key='es', ipcIndex=1, logFilenamePrefix=es]] from [/opt/sonarqube/elasticsearch]: /opt/sonarqube/elasticsearch/bin/elasticsearch
+2019.10.07 17:18:45 INFO  app[][o.s.a.SchedulerImpl] Waiting for Elasticsearch to be up and running
+OpenJDK 64-Bit Server VM warning: Option UseConcMarkSweepGC was deprecated in version 9.0 and will likely be removed in a future release.
+2019.10.07 17:18:46 INFO  app[][o.e.p.PluginsService] no modules loaded
+2019.10.07 17:18:46 INFO  app[][o.e.p.PluginsService] loaded plugin [org.elasticsearch.transport.Netty4Plugin]
+2019.10.07 17:19:19 INFO  app[][o.s.a.SchedulerImpl] Process[es] is up
+2019.10.07 17:19:20 INFO  app[][o.s.a.ProcessLauncherImpl] Launch process[[key='web', ipcIndex=2, logFilenamePrefix=web]] from [/opt/sonarqube]: /usr/lib/jvm/java-11-openjdk-amd64/bin/java -Djava.awt.headless=true -Dfile.encoding=UTF-8 -Djava.io.tmpdir=/opt/sonarqube/temp --add-opens=java.base/java.util=ALL-UNNAMED --add-opens=java.base/java.lang=ALL-UNNAMED --add-opens=java.base/java.io=ALL-UNNAMED --add-opens=java.rmi/sun.rmi.transport=ALL-UNNAMED -Xmx512m -Xms128m -XX:+HeapDumpOnOutOfMemoryError -server -Dhttp.nonProxyHosts=localhost|127.*|[::1] -cp ./lib/common/*:/opt/sonarqube/lib/jdbc/postgresql/postgresql-42.2.5.jar org.sonar.server.app.WebServer /opt/sonarqube/temp/sq-process9673736401960408480properties
+2019.10.07 17:20:11 INFO  app[][o.s.a.SchedulerImpl] Process[web] is up
+2019.10.07 17:20:11 INFO  app[][o.s.a.ProcessLauncherImpl] Launch process[[key='ce', ipcIndex=3, logFilenamePrefix=ce]] from [/opt/sonarqube]: /usr/lib/jvm/java-11-openjdk-amd64/bin/java -Djava.awt.headless=true -Dfile.encoding=UTF-8 -Djava.io.tmpdir=/opt/sonarqube/temp --add-opens=java.base/java.util=ALL-UNNAMED -Xmx512m -Xms128m -XX:+HeapDumpOnOutOfMemoryError -Dhttp.nonProxyHosts=localhost|127.*|[::1] -cp ./lib/common/*:/opt/sonarqube/lib/jdbc/postgresql/postgresql-42.2.5.jar org.sonar.ce.app.CeServer /opt/sonarqube/temp/sq-process554392639275369535properties
+2019.10.07 17:20:39 INFO  app[][o.s.a.SchedulerImpl] Process[ce] is up
+2019.10.07 17:20:39 INFO  app[][o.s.a.SchedulerImpl] SonarQube is up
+Congratulations! You have finished the Sonarqube installation
+---
+
+-Enter with: http://your-ip:9000
+
+
+- On Sonarqube :
+  Administrator --> Security --> Users 
+      create a token for admin ( will be used on jenkins)
+
+Create the admin token: (Administration --> Security -->Users)
+#sonarqube  token ( admin)
+sonarqube-jenkins
+cf1f3e7afdadeb094703f78524d539f6ed3762e9
+
+
+- Install the sonarqube scanner ( the last one : https://binaries.sonarsource.com/Distribution/sonar-scanner-cli/):
+
+wget https://binaries.sonarsource.com/Distribution/sonar-scanner-cli/sonar-scanner-cli-4.4.0.2170-linux.zip
+unzip sonar-scanner-cli-4.4.0.2170-linux
+sudo mv sonar-scanner-4.4.0.2170-linux/ /opt/sonarqube/
+
+
+Then to configure with Jenkins check this tutorial:
+https://aspiresoftware.in/blog/intergrating-sonarqube-and-jenkins/
+
+basically
+- On jenkins:
+   --> In credentials , add the token generated in Sonarqube as Secret Key
+
+
+install the SonarQube plugin
+    Configure Sonarqube in Configure System
+    Configure Sonarqube in Global tool configuration
+      --> use the path where you installed the sonar scanner : /opt/sonarqube/sonar-scanner-4.4.0.2170-linux/
+
+In your pipeline , remember :
+"sonarqube-scanner"  --> name of the tool that you use in Global tool
+"SonarQube" --> name of sonarqube server that was defined on Global System
+
+---------------declarative example ---
+stage('Sonarqube') {
+            environment {
+                scannerHome = tool 'sonarqube-scanner'
+            }
+            steps {
+                withSonarQubeEnv('SonarQube') {
+                    sh "${scannerHome}/bin/sonar-scanner"
+                }
+                timeout(time: 10, unit: 'MINUTES') {
+                    waitForQualityGate abortPipeline: true
+                }
+            }
+        }
