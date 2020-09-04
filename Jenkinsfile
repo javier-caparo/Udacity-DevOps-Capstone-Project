@@ -56,16 +56,18 @@ pipeline {
             
         }
 
-        stage('Sonarqube') {
-            environment {
-                scannerHome = tool 'sonarqube-scanner'
-            }
+        stage('Code Quality Check via SonarQube') {
             steps {
-                withSonarQubeEnv('SonarQube') {
-                    sh "${scannerHome}/bin/sonar-scanner"
-                }
-                timeout(time: 10, unit: 'MINUTES') {
-                    waitForQualityGate abortPipeline: true
+                script {
+                    def scannerHome = tool 'sonarqube-scanner';
+                        withSonarQubeEnv("SonarQube") {
+                            sh "${tool("sonarqube-scanner")}/bin/sonar-scanner \
+                            -Dsonar.projectKey=test-node-js \
+                            -Dsonar.sources=. \
+                            -Dsonar.css.node=. \
+                            -Dsonar.host.url=http://localhost:9000 \
+                            -Dsonar.login=cf1f3e7afdadeb094703f78524d539f6ed3762e9"
+                        }
                 }
             }
         }

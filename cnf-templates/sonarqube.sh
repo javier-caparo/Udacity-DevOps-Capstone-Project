@@ -12,3 +12,21 @@ Create the admin toke: (Administration --> Security -->Users)
 #sonarqube  token ( admin)
 sonarqube-jenkins
 cf1f3e7afdadeb094703f78524d539f6ed3762e9
+
+
+
+one veriosn of sonaruqbe stage
+stage('Sonarqube') {
+            environment {
+                scannerHome = tool 'sonarqube-scanner'
+            }
+            steps {
+                withSonarQubeEnv('SonarQube') {
+                    sh "${scannerHome}/bin/sonar-scanner"
+                }
+                timeout(time: 10, unit: 'MINUTES') {
+                    waitForQualityGate abortPipeline: true
+                }
+            }
+        }
+        
