@@ -69,7 +69,7 @@ pipeline {
                             -Dsonar.sources=. \
                             -Dsonar.css.node=. \
                             -Dsonar.host.url=http://localhost:9000 \
-                            -Dsonar.login=cf1f3e7afdadeb094703f78524d539f6ed3762e9"
+                            -Dsonar.login=ba1fe6e839f20654280304081e68bff83a2bbd57"
                         }
                 }
             }
