@@ -23,13 +23,24 @@ Ocean Blue
 NodeJS   ( later in global tool configuration : add a Nodejs with name "nodejs" , vresion 14.8.0)
 Pipeline AWS Steps
 GitParameter
+SonarQube --> Integratin with sonarqube
 ==========
+
+to restart Jenkins
++++++++++
+to check is running:
+$sudo systemctl status jenkins
+
+to restart jenkins
+$sudo systemctl restart jenkins
+
 
 Jenkins Credentials
 ===========
 github (as secret key  , id=empty , description :github)
-dockerhub ( username password  , use id: dockerhub)
-AWS credentials ( AWS credentials , id:aws-credentials, description: aws-credentials access key id, secrect access)
+dockerhub ( username ,password  , use id: dockerhub, description:dockerhub)
+AWS credentials ( AWS credentials , id:aws-credentials, description: aws-credentials, access key id, secrect access)
+
 
 
 To check cluster
@@ -47,6 +58,42 @@ delete the deployment & service
 
 delet the cluster
 eksctl delete cluster --name Capstone-cluster
+
+Example:
+ubuntu@ip-172-31-62-101:~$ kubectl get service
+NAME         TYPE           CLUSTER-IP       EXTERNAL-IP                                                               PORT(S)        AGE
+kubernetes   ClusterIP      10.100.0.1       <none>                                                                    443/TCP        5h56m
+my-app       LoadBalancer   10.100.240.174   a0e22230f893442b5ab6d46f0bbfc6e8-1936753010.us-west-2.elb.amazonaws.com   80:31945/TCP   5h36m
+ubuntu@ip-172-31-62-101:~$
+ubuntu@ip-172-31-62-101:~$ kubectl get deployments
+NAME     READY   UP-TO-DATE   AVAILABLE   AGE
+my-app   4/4     4            4           5h36m
+ubuntu@ip-172-31-62-101:~$ kubectl delete service my-app
+service "my-app" deleted
+ubuntu@ip-172-31-62-101:~$ kubectl delete deployment my-app
+deployment.apps "my-app" deleted
+ubuntu@ip-172-31-62-101:~$
+ubuntu@ip-172-31-62-101:~$ kubectl get deployments
+No resources found in default namespace.
+ubuntu@ip-172-31-62-101:~$ kubectl get service
+NAME         TYPE        CLUSTER-IP   EXTERNAL-IP   PORT(S)   AGE
+kubernetes   ClusterIP   10.100.0.1   <none>        443/TCP   5h57m
+ubuntu@ip-172-31-62-101:~$
+ubuntu@ip-172-31-62-101:~$ eksctl delete cluster --name Capstone-cluster
+[ℹ]  eksctl version 0.26.0
+[ℹ]  using region us-west-2
+[ℹ]  deleting EKS cluster "Capstone-cluster"
+[ℹ]  deleted 0 Fargate profile(s)
+[ℹ]  cleaning up AWS load balancers created by Kubernetes objects of Kind Service or Ingress
+[ℹ]  2 sequential tasks: { 2 parallel sub-tasks: { delete nodegroup "ng-1", delete nodegroup "ng-2" }, delete cluster control plane "Capstone-cluster" [async] }
+[ℹ]  will delete stack "eksctl-Capstone-cluster-nodegroup-ng-1"
+[ℹ]  waiting for stack "eksctl-Capstone-cluster-nodegroup-ng-1" to get deleted
+[ℹ]  will delete stack "eksctl-Capstone-cluster-nodegroup-ng-2"
+[ℹ]  waiting for stack "eksctl-Capstone-cluster-nodegroup-ng-2" to get deleted
+[ℹ]  will delete stack "eksctl-Capstone-cluster-cluster"
+[✔]  all cluster resources were deleted
+ubuntu@ip-172-31-62-101:~$
+
 
 - on cloudformation
 delte the ubuntu stack

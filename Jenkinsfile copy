@@ -56,20 +56,6 @@ pipeline {
             
         }
 
-        stage('Sonarqube') {
-            environment {
-                scannerHome = tool 'sonarqube-scanner'
-            }
-            steps {
-                withSonarQubeEnv('SonarQube') {
-                    sh "${scannerHome}/bin/sonar-scanner"
-                }
-                timeout(time: 10, unit: 'MINUTES') {
-                    waitForQualityGate abortPipeline: true
-                }
-            }
-        }
-        
         stage('Lint Dockerfile') {
             steps {
                 sh 'hadolint Dockerfile'

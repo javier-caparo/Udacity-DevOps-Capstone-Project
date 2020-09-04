@@ -52,6 +52,10 @@ Resources:
               FromPort: 3000
               ToPort: 3000
               CidrIp: !Ref 'Location'
+            - IpProtocol: tcp
+              FromPort: 9000
+              ToPort: 9000
+              CidrIp: !Ref 'Location'
     EC2Instance:
         Type: AWS::EC2::Instance
         #CreationPolicy:
@@ -91,8 +95,6 @@ Resources:
                 sudo apt install -y unzip
                 # install git
                 sudo apt install -y git
-                touch jenkins-req.sh 
-                chmod +x jenkins-req.sh
 
 Outputs:
     InstanceId:

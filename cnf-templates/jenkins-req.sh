@@ -74,7 +74,6 @@ echo -e "$COL># fixing docker permissions$NOC"
 newgrp docker
 sudo usermod -aG docker ubuntu
 sudo usermod -aG docker jenkins
-exit
 echo -e "$COL># docker fixed permissions issue!!$NOC"
 
 echo -e "$COL>Installation finished$NOC"

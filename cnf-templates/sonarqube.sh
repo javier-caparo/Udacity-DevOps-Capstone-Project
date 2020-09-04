@@ -1,31 +1,14 @@
-sudo apt update
-sudo apt install -y nginx
+Follow this tutorial:
+https://techexpert.tips/sonarqube/sonarqube-installation-on-the-cloud-aws-ec2/
 
-sudo apt install mysql-server
 
-sudo mysql_secure_installation
-  ansyer Y
-   then 1   ( password: ChangeMe01)
-     then all 'Y"
+postgreslq10  user password: Hypersonic#20
 
-sudo mysql
-SELECT user,authentication_string,plugin,host FROM mysql.user;
-ALTER USER 'root'@'localhost' IDENTIFIED WITH mysql_native_password BY 'Hypersonic#20';
 
-FLUSH PRIVILEGES;
-SELECT user,authentication_string,plugin,host FROM mysql.user;
+Then to configure with Jenkins check this tutorial:
+https://dzone.com/articles/jenkins-pipeline-with-sonarqube-and-gitlab#:~:text=Go%20Dashboard%20%3E%20Manage%20Jenkins%20%3E%20Manage,the%20result%20to%20SonarQube%20Server.
 
-quit
-----
-Note: After configuring your root MySQL user to authenticate with a password, you’ll no longer be able to access MySQL with the sudo mysql command used previously. Instead, you must run the following:
-
-mysql -u root -p
-After entering the password you just set, you will see the MySQL prompt.
-
-At this point, your database system is now set up and you can move on to installing PHP.
-=---
-
-php part
-=========
-sudo apt install php-fpm php-mysql
-
+Create the admin toke: (Administration --> Security -->Users)
+#sonarqube  token ( admin)
+sonarqube-jenkins
+cf1f3e7afdadeb094703f78524d539f6ed3762e9
