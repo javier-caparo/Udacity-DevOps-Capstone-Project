@@ -229,6 +229,7 @@ pipeline {
 
     post {
         always {
+            cleanWs()
             echo 'Pipeline finished'
         }
     }
