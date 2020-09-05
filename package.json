@@ -5,7 +5,7 @@
   "main": "app.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "lint": "eslint \"./**/*.js\" --quiet",
+    "lint": "eslint \"./**/*.js\"",
     "lintFull": "eslint \"./**/*.js\"",
     "lintFix": "eslint --fix './**/*.js'",
     "prettify": "prettier src/*.js --write"
