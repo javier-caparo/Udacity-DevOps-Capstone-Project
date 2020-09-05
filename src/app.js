@@ -6,6 +6,7 @@ const path = __dirname + "/views/";
 const port = 3000;
 
 var a = ;
+var b = ;
 
 router.use(function (req, res, next) {
   console.log("/" + req.method);
