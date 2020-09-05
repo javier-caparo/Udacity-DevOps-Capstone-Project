@@ -75,6 +75,25 @@ pipeline {
                 }
             }
         }
+
+        stage('Code Quality Check via SonarQube') {
+            when {
+                not { branch 'master' }
+            }
+            steps {
+                script {
+                    def scannerHome = tool 'sonarqube-scanner';
+                        withSonarQubeEnv("SonarQube") {
+                            sh "${tool("sonarqube-scanner")}/bin/sonar-scanner \
+                            -Dsonar.projectKey=branch-test-node-js \
+                            -Dsonar.sources=. \
+                            -Dsonar.css.node=. \
+                            -Dsonar.host.url=http://localhost:9000 \
+                            -Dsonar.login=ba1fe6e839f20654280304081e68bff83a2bbd57"
+                        }
+                }
+            }
+        }
         
         stage('Lint Dockerfile') {
             steps {
