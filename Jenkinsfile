@@ -232,5 +232,9 @@ pipeline {
             cleanWs()
             echo 'Pipeline finished'
         }
+        cleanup{
+            cleanWs()
+            echo 'Wipeout workspace'
+        }
     }
 }
