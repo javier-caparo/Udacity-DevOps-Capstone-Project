@@ -97,7 +97,7 @@ Important NOTES:
 in summary:
 | File/Directory | Description|
 | ------ | ------ |
-| cnf-templates | Clouformation tempalte to create the Ubuntu Jenkins Sonarqube Server|
+| cnf-templates | Clouformation template to create the Ubuntu Jenkins Sonarqube Server and useful scripts|
 | eks| the yaml files to create the cluster ; the deployment and the service|
 | images | The Screenshots showing the steps executed to create the CI/CD pipeline|
 | src | The source code of pur APP - a NodeJS app that renders 2 html pages |
@@ -112,6 +112,7 @@ in summary:
 | package.json| the package.json file since our app is a NodeJS app. used to install the app reqs and dependencies|
 | package-lock.json| the package-lock.json |
 | README.md | this readme file |
+| screenshots-list.md | the index of screenshots and a bried description |
 | LICENSE | the license file|
 
 
