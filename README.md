@@ -21,7 +21,39 @@ In order to accomplish this goal you will use the following Jenkins plugins:
 In order to deploy the application with [Kubernetes](http://kubernetes.io/) you will use the following resources:
   - [Deployments](http://kubernetes.io/docs/user-guide/deployments/) - replicates our application across our kubernetes nodes and allows us to do a controlled rolling update of our software across the fleet of application instances
   - [Services](http://kubernetes.io/docs/user-guide/services/) - load balancing and service discovery for our internal services
- 
+
+
+### Below the Project Scope workflow ( Step1):
+ - EKS deployment Strategy : ROLLING UPDATE
+ - Use Jenkins ( port 8080) & Sonarqube ( port 9000)
+ - Dockerize the app :  master branch to dockerhub , the dev brances to AWS ECR
+ - CI Stages: include the npm build, the Lint Tests ( eslint and prettify), the SonarQube Scanner, the dockerized stages
+ - CD Stages: Read EKS config, deploy to EKS ( deployment.yaml), apply the service ( service.yaml), ask to user if is OK ( waiting input)
+ - Post stages ( final response and wipeout)
+
+```
+-----------      ---------------      ~~~~~~~~~~~~~~~~        ---------------
+|         |      |             |      |              |        |             |
+| jenkins | ---> | Pipeline to | ---> | Pipeline to  | -----> | Pipeline to |
+|     &   |      | create the  |      | CI/CD        |        | delete the  |     
+|sonarqube|      |EKS Cluster  |      | Deployment   |        | EKS Cluster |
+| ( cnf)  |      | ( single)   |      |(Multibranch) |        |  ( single)  |   
+|         |      |             |      | *Build       |        |             |
+|         |      |             |      | *Lint        |        |             |
+|         |      |             |      | *Scan-sonar  |        |             |
+|         |      |             |      | *Docker      |        |             |
+|         |      |             |      | *deploy to K8|        |             |
+-----------      ---------------      ~~~~~~~~~~~~~~~~        ---------------
+                                                  |    -----------
+                                                  |    |         |
+                                                  |--> |Sonarqube|
+                                                       |(scannr) |
+                                                       |         |
+                                                       -----------
+```
+
+- ### the repo include a "images" subdirectory which contains the screenshots of above flow. 
+
 ## Prerequisites
 
 1. An AWS IAM Account with these policy profiles available Note : not use this full access permission on real production environments ( use a more restrictive ones):
@@ -51,10 +83,10 @@ In order to deploy the application with [Kubernetes](http://kubernetes.io/) you 
 }
 
 Important NOTES: 
- - you need the Account IAM User "Access Key ID"  & "Secret access key" because you will needed later to configure AWS CLI !!!!!
+1. you need the Account IAM User "Access Key ID"  & "Secret access key" because you will needed later to configure AWS CLI !!!!!
  - You can also use an IAM Role if you prefer ( give the above permissions and get the credentials )
 
- 2. A docker hub account to be used as our "master" repo [master repo](https://hub.docker.com/)
+2. A docker hub account to be used as our "master" repo [master repo](https://hub.docker.com/)
 3. An AWS ECR repo to be used as our "developers" repo [dev repo](https://aws.amazon.com/ecr/)
 4. An S3 bucket where the "cluster.yaml" (located at "eks\cluster.yaml") file was uploaded previously  to create the EKS cluster ( will be used on Jenkins Pipeline that creates the EKS cluster)
 
@@ -63,13 +95,31 @@ Important NOTES:
 [Repo tree file](https://static-jenkins-repo-project3.s3-us-west-2.amazonaws.com/file+tree+structure.jpg)
 
 in summary:
-
-
+| File/Directory | Description|
+| ------ | ------ |
+| cnf-templates | Clouformation tempalte to create the Ubuntu Jenkins Sonarqube Server|
+| eks| the yaml files to create the cluster ; the deployment and the service|
+| images | The Screenshots showing the steps executed to create the CI/CD pipeline|
+| src | The source code of pur APP - a NodeJS app that renders 2 html pages |
+| useful files| files of support or help |
+| .dockerignore|  the dockerignore file |
+| .eslintrc.json | the eslint init file with rules to perform the eslint in thesrc code|
+| . gitignore | the .gitignore file |
+| Dockerfile| the Dockerfile needed to Dockerize the App . Expose the App in port 3000 |
+| Jenkisfile| the Jenkisfile used by "master" branch to create the master pipeline |
+| Jenkisfile_eks| the Jenkisfile used on the Cluster Creation Pipeline |
+| Jenkisfile_eks_delete| the Jenkisfile used on the Cluster Deletion Pipeline |
+| package.json| the package.json file since our app is a NodeJS app. used to install the app reqs and dependencies|
+| package-lock.json| the package-lock.json |
+| README.md | this readme file |
+| LICENSE | the license file|
 
 
 ## Do this first
 
-- On AWS console set you region to "us-west-2". WE are using the resources of that Region. If you are going to use another region , check your AMIs and availability to use EKS on your regions with eksctl.
+- On AWS console set you region to "us-west-2". We are using the resources of that Region. If you are going to use another region , check your AMIs and availability to use EKS on your regions with eksctl.
+
+- Create an S3 bucket and upload  the file "cluster.yaml" ( located at eks\cluster.yaml). It will be used in our Jenkins Pipeline to create the CLuster Creation.
 
 ## Install Ubuntu Jenkins Sonarqube server ( both services in the same server)
 1. Execute the Ubuntu Jenkins Sonarqube CloudFormation template located at  "cnf-templates\ec2-jenkins.yml" to get an Ubuntu EC2 instance 
