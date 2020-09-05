@@ -26,12 +26,7 @@ pipeline {
 
     stages {
         
-        stage('Cloning Git') {
-            steps {
-                step([$class: 'WsCleanup'])
-                git 'https://github.com/jfcb853/Udacity-DevOps-Capstone-Project'
-            }
-        }
+        
         stage('Build Dependencies') {
             steps {
                 sh 'npm install'
