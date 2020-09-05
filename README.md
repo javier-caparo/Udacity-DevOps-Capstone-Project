@@ -4,6 +4,7 @@
 
 ## PROJECT SCOPE
 
+![CI/CD Pipeline Diagram](https://static-jenkins-repo-project3.s3-us-west-2.amazonaws.com/CI-CD+Pipeline+Diagram.jpg)
 This guide will take you through the steps necessary to BUILD a CI/CD pipeline
  by leveraging [AWS EKS](https://aws.amazon.com/eks/getting-started/)
 , [Jenkins](https://jenkins.io) and [Sonarqube](https://www.sonarqube.org/) to orchestrate the software delivery pipeline and its deployment in AWS EKS using a "ROLLING UPDATE STRATEGY".
@@ -172,6 +173,7 @@ Note: Check again that you already have an AWS S3 bucket  where the "cluster.yam
 - [Architecture Overview] (https://github.com/weaveworks/eksctl/blob/master/docs/architecture_diagrams/EKS%20%26%20AWS%20architecture%20overview.svg)
 
  -Your EKS cluster was created OK!!!
+ ![EKS CLuster diagram](https://static-jenkins-repo-project3.s3-us-west-2.amazonaws.com/EKS+cluster+diagram.jpg)
  
 ## Jenkins Pipeline to deploy the app in a AWS EKS with Rolling Update Strategy
 
