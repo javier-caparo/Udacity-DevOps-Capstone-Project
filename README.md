@@ -53,6 +53,7 @@ In order to deploy the application with [Kubernetes](http://kubernetes.io/) you 
 ```
 
 - ### the repo include a "images" subdirectory which contains the screenshots of above flow. 
+[PlDb]: <https://github.com/jfcb853/Udacity-DevOps-Capstone-Project/blob/master/screenshots-list.md>
 
 ## Prerequisites
 
