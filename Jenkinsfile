@@ -76,7 +76,7 @@ pipeline {
             }
         }
 
-        stage('Code Quality Check via SonarQube') {
+        stage('SonarQube Scan Branch') {
             when {
                 not { branch 'master' }
             }
