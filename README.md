@@ -106,7 +106,7 @@ in summary:
  ```sh
  $sudo systemctl status jenkins
  $sudo systemctl status docker
- $sudo systemctl status sonarqube
+ $sudo tail -f /opt/sonarqube/logs/sonar.log
  ```
 
 7. If you follow this guidelines, then, you can enter to Jenkins GUI at port 8080 & Sonarqube at port 9000 with the public DNS of your EC2 Ubuntu Jenkins Sonarqube instance . Example:
