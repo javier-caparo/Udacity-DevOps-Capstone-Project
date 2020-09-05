@@ -40,5 +40,9 @@ pipeline {
         always {
             echo 'Pipeline finished'
         }
+        cleanup{
+            cleanWs()
+            echo 'Wipeout workspace'
+        }
     }
 }
