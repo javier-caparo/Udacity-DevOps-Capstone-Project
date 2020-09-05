@@ -5,6 +5,8 @@ const router = express.Router();
 const path = __dirname + "/views/";
 const port = 3000;
 
+var a = ;
+
 router.use(function (req, res, next) {
   console.log("/" + req.method);
   next();
@@ -24,3 +26,4 @@ app.use("/", router);
 app.listen(port, function () {
   console.log("Example app listening on port 3000!");
 });
+
