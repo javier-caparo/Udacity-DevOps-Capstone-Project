@@ -47,12 +47,12 @@ In order to deploy the application with [Kubernetes](http://kubernetes.io/) you 
                                                   |    -----------
                                                   |    |         |
                                                   |--> |Sonarqube|
-                                                       |(scannr) |
+                                                       |(scanner)|
                                                        |         |
                                                        -----------
 ```
 
-- ### the repo include a "images" subdirectory which contains the screenshots of above flow. 
+- ### the repo include a "images" subdirectory, which contains the screenshots of above flow. 
 [screenshot index][PlDb]
 
 ## Prerequisites
@@ -71,6 +71,7 @@ In order to deploy the application with [Kubernetes](http://kubernetes.io/) you 
 | eksFullAccessforIAMUser |  Inline Policy | 
 
 - Inline Policy with this json config:
+```sh
 {
     "Version": "2012-10-17",
     "Statement": [
@@ -82,6 +83,7 @@ In order to deploy the application with [Kubernetes](http://kubernetes.io/) you 
         }
     ]
 }
+```
 
 Important NOTES: 
 1. you need the Account IAM User "Access Key ID"  & "Secret access key" because you will needed later to configure AWS CLI !!!!!
@@ -119,23 +121,24 @@ in summary:
 
 ## Do this first
 
-- On AWS console set you region to "us-west-2". We are using the resources of that Region. If you are going to use another region , check your AMIs and availability to use EKS on your regions with eksctl.
+- On AWS console set your region to "us-west-2". We are using the resources of that Region. If you are going to use another region , check your AMIs and availability to use EKS on your regions with eksctl.
 
 - Create an S3 bucket and upload  the file "cluster.yaml" ( located at eks\cluster.yaml). It will be used in our Jenkins Pipeline to create the CLuster Creation.
 
-## Install Ubuntu Jenkins Sonarqube server ( both services in the same server)
+## Install Ubuntu Jenkins Sonarqube server ( both services are running in the same server in our case)
 1. Execute the Ubuntu Jenkins Sonarqube CloudFormation template located at  "cnf-templates\ec2-jenkins.yml" to get an Ubuntu EC2 instance 
 - this template configure your EC2 in a security group with permission to :
 - 22 -->ssh
 - 8080 --> Jenkins
 - 9000 --> Sonarqube
 - 80 --> nginx ( in case you want to configure nginx as reverse proxy with SonarQube)
-- 3000 --> our app expose port in case you want to test the docker image right there.
+- 3000 --> our app exposed port in case you want to test the docker image right there.
 
-- Also, this template already installed the last java version ( java 1.8) & git on the server.
+- Also, this template already installed the latest java version ( java 1.8) & git on the server.
 
 2. Wait that your instance is created on CloudFormation and at EC2 service wait that is running and ready.
-3. Connect by console you your new EC2 instance
+
+3. Connect by console to your new EC2 instance.
 
 4. Create a “sh” file and copy the lines at "cnf-templates\jenkins-req.sh" to install all requirements to run Jenkins and docker.
   
@@ -300,8 +303,8 @@ spec:
 ```
 - on this way "Rolling updates" allow Deployments update to take place with zero downtime by incrementally updating Pods instances with new ones. The new Pods will be scheduled on Nodes with available resources.
 
-How the new deployment changes the "deployment.yaml" with the new deployment version???
-- Here, we are using "sed" command to replace the "latest" word on the file , for the value of the BUILD.
+How the new deployment changes the "deployment.yaml" file with the new deployment version???
+- With the "sed" command to replace the "latest" word on the file , for the value of the BUILD_NUMBER.
 
 ```sh
 stage('Deploy to K8s') {
@@ -345,7 +348,9 @@ then you can check at EC2 instances, EC2 VPC, CloudFormation stacks, EKS service
 ### Things to add later
 
  - You can add "github" webhooks with Jenkins , so the "pull request" of the branch and "merge" are automated . On this demo we did it step by step for practical reasons and capture the screenshots.
- -
+
+Kudos on your DevOps path !!! Thanks in advance for take your time looking at my repo. 
+
 License
 ----
 
