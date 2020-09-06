@@ -1,4 +1,4 @@
-#  UDACITY DEVOPS CAPSTONE PROJECT: Build a Continuous  Integration / Continuous Deployment Pipeline (CI/CD with Jenkins and Kubernetes
+#  UDACITY DEVOPS CAPSTONE PROJECT: Build a Continuous  Integration / Continuous Deployment Pipeline (CI/CD) with Jenkins and Kubernetes
 ----------------------------------
 
 
