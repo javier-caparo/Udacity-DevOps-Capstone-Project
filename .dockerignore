@@ -1,6 +1,12 @@
 node_modules
 npm-debug.log
 Dockerfile
+LICENSE
+README.md 
+screenshots-list.md 
+Jenkisfile
+Jenkinsfile_eks
+Jenkinsfile_eks_delete
 .dockerignore
 .gitignore
 .git

@@ -1,4 +1,4 @@
-FROM node:14-alpine
+FROM node:14-alpine AS stage1
 
 # set maintainer
 LABEL maintainer "javier.caparo@gmail.com"
@@ -16,6 +16,11 @@ RUN npm install
 
 COPY --chown=node:node ./src .
 
-EXPOSE 3000
 
-CMD [ "node", "app.js" ]
+#Second Stage us
+FROM gcr.io/distroless/nodejs:14-debug
+
+COPY --from=stage1 /home/node/app /app
+WORKDIR /app
+EXPOSE 3000
+CMD [ "app.js" ]
